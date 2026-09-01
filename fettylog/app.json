@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "fettylog",
-    "slug": "snack-9abcc3bf-7fea-4c2c-b0b4-e29081064566",
+    "name": "FettyLog",
+    "slug": "fettylog",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,6 +16,7 @@
       "supportsTablet": true
     },
     "android": {
+      "package": "com.fettylog.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
