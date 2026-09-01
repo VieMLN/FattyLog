@@ -28,14 +28,16 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Install Dependencies
+        working-directory: ./fettylog
         run: npm install --legacy-peer-deps
 
       - name: Prebuild Native Android Code
+        working-directory: ./fettylog
         run: npx expo prebuild --platform android --clean --non-interactive
 
       - name: Build Android Release APK
+        working-directory: ./fettylog/android
         run: |
-          cd android
           chmod +x gradlew
           ./gradlew assembleRelease --no-daemon
 
@@ -43,5 +45,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: FettyLog-APK
-          path: android/app/build/outputs/apk/**/*.apk
+          path: ./fettylog/android/app/build/outputs/apk/**/*.apk
           if-no-files-found: error
