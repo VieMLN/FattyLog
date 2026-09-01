@@ -6,6 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CI: 1
+      EXPO_NO_TELEMETRY: 1
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -25,12 +28,10 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Install Dependencies
-        run: |
-          npm install
-          npx expo install --fix || true
+        run: npm install --legacy-peer-deps
 
-      - name: Generate Android Native Project
-        run: npx expo prebuild --platform android --no-install --clean
+      - name: Prebuild Native Android Code
+        run: npx expo prebuild --platform android --clean --non-interactive
 
       - name: Build Android Release APK
         run: |
@@ -38,8 +39,9 @@ jobs:
           chmod +x gradlew
           ./gradlew assembleRelease --no-daemon
 
-      - name: Find and Upload APK
+      - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: FettyLog-APK
           path: android/app/build/outputs/apk/**/*.apk
+          if-no-files-found: error
