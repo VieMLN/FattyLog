@@ -426,9 +426,12 @@ const HabitsTab = ({ habitList, habitsCompleted, onToggle, onAdd, onDelete }) =>
 };
 
 /**
- * Leichtgewichtiges, natives Säulendiagramm zur Darstellung des Gewichtsverlaufs.
+ * Leichtgewichtiges Liniendiagramm für den Gewichtsverlauf über die Tage.
  */
 const WeightChart = ({ statsData }) => {
+  const [containerWidth, setContainerWidth] = useState(0);
+  const chartHeight = 90;
+
   const validWeights = useMemo(
     () => statsData.map((d) => d.weight).filter((w) => w !== null),
     [statsData]
@@ -444,35 +447,86 @@ const WeightChart = ({ statsData }) => {
 
   const min = Math.min(...validWeights);
   const max = Math.max(...validWeights);
-  const range = max - min || 1;
+  const range = max - min === 0 ? 1 : max - min;
+
+  // X- und Y-Koordinaten für jeden Datenpunkt berechnen
+  const points = statsData.map((item, idx) => {
+    const colWidth = containerWidth / (statsData.length || 1);
+    const x = colWidth * idx + colWidth / 2;
+
+    let y = null;
+    if (item.weight !== null) {
+      // Y: 0 ist oben, chartHeight ist unten (15px Padding oben/unten)
+      const ratio = (item.weight - min) / range;
+      y = chartHeight - 15 - ratio * (chartHeight - 30);
+    }
+
+    return { ...item, x, y };
+  });
 
   return (
-    <View style={styles.chartContainer}>
-      <View style={styles.chartBars}>
-        {statsData.map((item, idx) => {
-          const hasWeight = item.weight !== null;
-          const heightPercent = hasWeight
-            ? Math.max(18, Math.round(((item.weight - min) / range) * 70 + 20))
-            : 0;
+    <View
+      style={styles.chartContainer}
+      onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}>
+      
+      {/* Zeichenfläche für Linien & Punkte */}
+      <View style={[styles.chartCanvas, { height: chartHeight }]}>
+        {containerWidth > 0 &&
+          points.map((p1, idx) => {
+            if (idx === points.length - 1) return null;
+            const p2 = points[idx + 1];
 
-          return (
-            <View key={idx} style={styles.chartCol}>
-              <Text style={hasWeight ? styles.chartValText : styles.chartValEmpty} numberOfLines={1}>
-                {hasWeight ? item.weight : '-'}
-              </Text>
+            // Verbindungslinie nur zeichnen, wenn beide Tage Werte haben
+            if (p1.y !== null && p2.y !== null) {
+              const dx = p2.x - p1.x;
+              const dy = p2.y - p1.y;
+              const length = Math.sqrt(dx * dx + dy * dy);
+              const angle = Math.atan2(dy, dx) * (180 / Math.PI);
 
-              <View style={styles.barTrack}>
-                {hasWeight && (
-                  <View style={[styles.barFill, { height: `${heightPercent}%` }]}>
-                    <View style={styles.barTopDot} />
-                  </View>
-                )}
-              </View>
+              return (
+                <View
+                  key={`line-${idx}`}
+                  style={[
+                    styles.chartLineSegment,
+                    {
+                      width: length,
+                      left: p1.x,
+                      top: p1.y,
+                      transform: [
+                        { translateX: 0 },
+                        { translateY: -1 },
+                        { rotateZ: `${angle}deg` },
+                      ],
+                    },
+                  ]}
+                />
+              );
+            }
+            return null;
+          })}
 
-              <Text style={styles.chartDayLabel}>{item.dayLabel}</Text>
-            </View>
-          );
-        })}
+        {/* Punkte & Wertebeschriftung */}
+        {containerWidth > 0 &&
+          points.map((p, idx) => {
+            if (p.y === null) return null;
+            return (
+              <React.Fragment key={`point-${idx}`}>
+                <Text style={[styles.chartPointValue, { left: p.x - 20, top: p.y - 18 }]}>
+                  {p.weight}
+                </Text>
+                <View style={[styles.chartDot, { left: p.x - 4, top: p.y - 4 }]} />
+              </React.Fragment>
+            );
+          })}
+      </View>
+
+      {/* X-Achse Beschriftung (Wochentage) */}
+      <View style={styles.chartDaysRow}>
+        {statsData.map((item, idx) => (
+          <View key={idx} style={styles.chartDayCol}>
+            <Text style={styles.chartDayLabel}>{item.dayLabel}</Text>
+          </View>
+        ))}
       </View>
     </View>
   );
@@ -946,51 +1000,47 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   chartContainer: {
-    paddingVertical: 4,
-  },
-  chartBars: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-    height: 110,
-    paddingTop: 8,
-  },
-  chartCol: {
-    flex: 1,
-    alignItems: 'center',
-    height: '100%',
-    justifyContent: 'flex-end',
-  },
-  barTrack: {
-    width: 10,
-    height: 65,
-    backgroundColor: '#edf2f7',
-    borderRadius: 5,
-    justifyContent: 'flex-end',
-    marginVertical: 3,
-    overflow: 'hidden',
-  },
-  barFill: {
+    paddingVertical: 10,
     width: '100%',
+  },
+  chartCanvas: {
+    position: 'relative',
+    width: '100%',
+  },
+  chartLineSegment: {
+    position: 'absolute',
+    height: 2.5,
     backgroundColor: '#007AFF',
-    borderRadius: 5,
+    transformOrigin: 'left center',
   },
-  barTopDot: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: '#ffffff',
-    alignSelf: 'center',
-    marginTop: 2,
+  chartDot: {
+    position: 'absolute',
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#007AFF',
+    borderWidth: 1.5,
+    borderColor: '#ffffff',
   },
-  chartValText: {
-    fontSize: 9,
+  chartPointValue: {
+    position: 'absolute',
+    width: 40,
+    textAlign: 'center',
+    fontSize: 10,
     fontWeight: '700',
     color: '#007AFF',
   },
-  chartValEmpty: {
-    fontSize: 10,
-    color: '#cbd5e0',
+  chartDaysRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderTopWidth: 1,
+    borderTopColor: '#edf2f7',
+    paddingTop: 6,
+    marginTop: 4,
+  },
+  chartDayCol: {
+    flex: 1,
+    alignItems: 'center',
   },
   chartDayLabel: {
     fontSize: 10,
