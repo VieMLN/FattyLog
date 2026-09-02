@@ -16,6 +16,7 @@ on:
     branches:
       - master
       - main
+      - dev
     paths:
       - 'fettylog/**'
       - '.github/workflows/build.yml'
@@ -26,6 +27,7 @@ jobs:
     env:
       CI: 1
       EXPO_NO_TELEMETRY: 1
+      GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m -XX:+HeapDumpOnOutOfMemoryError"
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -53,6 +55,13 @@ jobs:
       - name: Prebuild Native Android Code
         working-directory: ./fettylog
         run: npx expo prebuild --platform android --clean --non-interactive
+
+      - name: Configure Gradle JVM & Memory
+        working-directory: ./fettylog/android
+        run: |
+          mkdir -p ~/.gradle
+          echo "org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m" >> gradle.properties
+          echo "org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m" >> ~/.gradle/gradle.properties
 
       - name: Build Android APK
         working-directory: ./fettylog/android
