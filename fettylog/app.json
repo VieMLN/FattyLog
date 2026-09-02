@@ -19,7 +19,7 @@
       "package": "com.fettylog.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#2e4660"
       },
       "edgeToEdgeEnabled": true
     },
