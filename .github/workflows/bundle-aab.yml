@@ -1,0 +1,86 @@
+name: Build Google Play AAB Bundle
+
+on:
+  workflow_dispatch:
+    inputs:
+      bundle_type:
+        description: 'Bundle Type (release for Google Play Store upload, debug for testing)'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - release
+          - debug
+          - both
+  push:
+    branches:
+      - master
+      - main
+    tags:
+      - 'v*'
+    paths:
+      - 'fettylog/**'
+      - '.github/workflows/bundle-aab.yml'
+
+jobs:
+  build-aab:
+    name: Build Android App Bundle (.aab)
+    runs-on: ubuntu-latest
+    env:
+      CI: 1
+      EXPO_NO_TELEMETRY: 1
+      GRADLE_OPTS: "-Dorg.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m -XX:+HeapDumpOnOutOfMemoryError"
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: './fettylog/package.json'
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Dependencies
+        working-directory: ./fettylog
+        run: npm install --legacy-peer-deps
+
+      - name: Prebuild Native Android Code
+        working-directory: ./fettylog
+        run: npx expo prebuild --platform android --clean --non-interactive
+
+      - name: Configure Gradle JVM & Memory
+        working-directory: ./fettylog/android
+        run: |
+          mkdir -p ~/.gradle
+          echo "org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m" >> gradle.properties
+          echo "org.gradle.jvmargs=-Xmx4096m -XX:MaxMetaspaceSize=1024m" >> ~/.gradle/gradle.properties
+
+      - name: Build Android App Bundle (.aab)
+        working-directory: ./fettylog/android
+        run: |
+          chmod +x gradlew
+          BUNDLE_TYPE="${{ github.event.inputs.bundle_type || 'release' }}"
+          if [ "$BUNDLE_TYPE" = "release" ]; then
+            ./gradlew bundleRelease --no-daemon
+          elif [ "$BUNDLE_TYPE" = "both" ]; then
+            ./gradlew bundleRelease bundleDebug --no-daemon
+          else
+            ./gradlew bundleDebug --no-daemon
+          fi
+
+      - name: Upload AAB Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FattyLog-AAB-Bundle
+          path: ./fettylog/android/app/build/outputs/bundle/**/*.aab
+          if-no-files-found: error
