@@ -120,7 +120,7 @@ export default function App() {
   }, [currentDate, dateKey, dayData]);
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col justify-between items-center">
+    <div className="min-h-screen bg-white md:bg-slate-100 flex flex-col justify-between items-center">
       <main className="w-full max-w-md min-h-screen bg-slate-50 flex flex-col shadow-lg border-x border-slate-200">
         {/* Fester Datums-Header */}
         <DateHeader
