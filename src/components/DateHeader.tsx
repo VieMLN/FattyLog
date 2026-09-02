@@ -58,6 +58,9 @@ export const DateHeader: React.FC<DateHeaderProps> = ({ currentDate, onDayChange
 
       {/* Date Display and Native DatePicker Overlay */}
       <div className="flex items-center gap-2 relative">
+        <span className="px-1.5 py-0.5 bg-yellow-400 text-black font-black text-xs rounded uppercase tracking-wider shadow-xs">
+          TEST
+        </span>
         <label htmlFor="date-picker-input" className="cursor-pointer flex items-center gap-1.5">
           <span className="text-sm font-bold text-slate-800 hover:text-blue-600 transition-colors">
             {formatted}

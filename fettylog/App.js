@@ -227,7 +227,12 @@ const DateHeader = ({ currentDate, onDayChange }) => {
         <Text style={styles.navBtnText}>◀ Gestern</Text>
       </TouchableOpacity>
       
-      <Text style={styles.dateTitle}>{formatted}</Text>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+        <View style={{ backgroundColor: '#FFE600', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4 }}>
+          <Text style={{ color: '#000000', fontWeight: 'bold', fontSize: 11 }}>TEST</Text>
+        </View>
+        <Text style={styles.dateTitle}>{formatted}</Text>
+      </View>
       
       <TouchableOpacity
         onPress={() => onDayChange(1)}

@@ -1,6 +1,6 @@
 {
-  "name": "FattyLog",
-  "short_name": "FattyLog",
+  "name": "TEST",
+  "short_name": "TEST",
   "description": "All-in-One Kalorien- und Gewohnheitstracker mit 7-Tage-Statistik",
   "start_url": "/",
   "display": "standalone",
