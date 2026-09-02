@@ -2,6 +2,23 @@ name: Build Android APK
 
 on:
   workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build Type (debug is directly installable without keystore)'
+        required: true
+        default: 'debug'
+        type: choice
+        options:
+          - debug
+          - release
+          - both
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - 'fettylog/**'
+      - '.github/workflows/build.yml'
 
 jobs:
   build:
@@ -16,7 +33,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: './fettylog/package.json'
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -35,11 +54,18 @@ jobs:
         working-directory: ./fettylog
         run: npx expo prebuild --platform android --clean --non-interactive
 
-      - name: Build Android Release APK
+      - name: Build Android APK
         working-directory: ./fettylog/android
         run: |
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon
+          BUILD_TYPE="${{ github.event.inputs.build_type || 'debug' }}"
+          if [ "$BUILD_TYPE" = "release" ]; then
+            ./gradlew assembleRelease --no-daemon
+          elif [ "$BUILD_TYPE" = "both" ]; then
+            ./gradlew assembleDebug assembleRelease --no-daemon
+          else
+            ./gradlew assembleDebug --no-daemon
+          fi
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
