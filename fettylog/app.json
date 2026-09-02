@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "FettyLog",
+    "name": "FattyLog",
     "slug": "fettylog",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#FFE600"
+      "backgroundColor": "#2b3e4e"
     },
     "ios": {
       "supportsTablet": true
@@ -19,7 +19,7 @@
       "package": "com.fettylog.app",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFE600"
+        "backgroundColor": "#2b3e4e"
       },
       "edgeToEdgeEnabled": true
     },

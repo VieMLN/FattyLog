@@ -1,4 +1,264 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" rx="20" fill="#FFE600"/>
-  <text x="50" y="62" font-size="34" font-family="sans-serif" font-weight="900" fill="#000000" text-anchor="middle">TEST</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Outer White Circle Drop Shadow -->
+    <filter id="subtleShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.12" />
+    </filter>
+
+    <!-- Metallic Rim Gradient -->
+    <radialGradient id="rimGrad" cx="45%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#9cb6c9" />
+      <stop offset="40%" stop-color="#607d94" />
+      <stop offset="75%" stop-color="#415a6e" />
+      <stop offset="100%" stop-color="#2a3d4c" />
+    </radialGradient>
+
+    <!-- Inner Medallion Background Gradient -->
+    <radialGradient id="innerBg" cx="48%" cy="42%" r="55%">
+      <stop offset="0%" stop-color="#738f9f" />
+      <stop offset="45%" stop-color="#557082" />
+      <stop offset="85%" stop-color="#3c5262" />
+      <stop offset="100%" stop-color="#283945" />
+    </radialGradient>
+
+    <!-- Torso Silhouette Gradient -->
+    <linearGradient id="torsoGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4f6878" />
+      <stop offset="50%" stop-color="#3a4f5e" />
+      <stop offset="100%" stop-color="#2c3c48" />
+    </linearGradient>
+
+    <!-- Muscle / Contour Highlight -->
+    <linearGradient id="highlightGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8ba6b8" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#6b8698" stop-opacity="0.2" />
+    </linearGradient>
+
+    <!-- Liver Gradient -->
+    <linearGradient id="liverGrad" x1="20%" y1="10%" x2="80%" y2="90%">
+      <stop offset="0%" stop-color="#ffe359" />
+      <stop offset="40%" stop-color="#ffb81c" />
+      <stop offset="90%" stop-color="#e08600" />
+    </linearGradient>
+
+    <!-- Stomach Gradient -->
+    <linearGradient id="stomachGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ff948d" />
+      <stop offset="60%" stop-color="#ea5853" />
+      <stop offset="100%" stop-color="#bf3430" />
+    </linearGradient>
+
+    <!-- Intestine Coil Gradient -->
+    <linearGradient id="intestineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffa69e" />
+      <stop offset="50%" stop-color="#f06a64" />
+      <stop offset="100%" stop-color="#c9443e" />
+    </linearGradient>
+
+    <!-- Magnifying Glass Lens Gradient -->
+    <radialGradient id="lensGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9" />
+      <stop offset="40%" stop-color="#d9e9f2" stop-opacity="0.7" />
+      <stop offset="80%" stop-color="#9fc2d8" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#648fa8" stop-opacity="0.7" />
+    </radialGradient>
+
+    <!-- Glass Rim Metallic -->
+    <linearGradient id="glassRim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#d4e3ed" />
+      <stop offset="50%" stop-color="#678398" />
+      <stop offset="100%" stop-color="#2c3f4e" />
+    </linearGradient>
+  </defs>
+
+  <!-- Clean White Circle Container (matching Expo Go & AI Studio homescreen standard) -->
+  <circle cx="512" cy="512" r="496" fill="#FFFFFF" filter="url(#subtleShadow)" />
+
+  <!-- Centered Circular Metallic Medallion (diameter ~800px) -->
+  <g transform="translate(512, 512) scale(0.78) translate(-512, -512)">
+    <!-- Outer Dark Rim Shadow -->
+    <circle cx="512" cy="512" r="500" fill="#1b2832" />
+    
+    <!-- Metallic Bezel Outer -->
+    <circle cx="512" cy="512" r="488" fill="url(#rimGrad)" stroke="#1a2730" stroke-width="12" />
+    
+    <!-- Metallic Bezel Inner Groove -->
+    <circle cx="512" cy="512" r="436" fill="none" stroke="#223340" stroke-width="8" opacity="0.6" />
+    <circle cx="512" cy="512" r="432" fill="none" stroke="#90afc4" stroke-width="4" opacity="0.7" />
+
+    <!-- Medallion Inner Background -->
+    <circle cx="512" cy="512" r="424" fill="url(#innerBg)" stroke="#1a2730" stroke-width="10" />
+
+    <!-- Clip Path for Inside the Medallion -->
+    <clipPath id="medallionClip">
+      <circle cx="512" cy="512" r="418" />
+    </clipPath>
+
+    <g clip-path="url(#medallionClip)">
+      <!-- Torso & Head Silhouette (Looking right in profile) -->
+      <path d="
+        M 512,130
+        C 570,130 620,165 628,225
+        C 630,240 626,252 618,260
+        C 625,266 638,276 640,290
+        C 642,305 628,315 624,324
+        C 628,335 622,348 606,358
+        C 580,374 565,392 560,425
+        L 660,438
+        C 730,450 780,510 805,580
+        C 830,650 820,740 810,880
+        L 214,880
+        C 204,740 194,650 219,580
+        C 244,510 294,450 364,438
+        L 464,425
+        C 459,392 444,374 418,358
+        C 402,348 396,335 400,324
+        C 396,315 382,305 384,290
+        C 386,276 399,266 406,260
+        C 398,252 394,240 396,225
+        C 404,165 454,130 512,130 Z
+      " fill="url(#torsoGrad)" stroke="#1b2a36" stroke-width="12" stroke-linejoin="round" />
+
+      <!-- Head & Neck Anatomy Contours -->
+      <!-- Profile Nose/Chin/Jaw highlight line -->
+      <path d="M 618,225 Q 636,255 615,262 Q 640,285 624,310 Q 628,335 595,355 Q 562,370 550,420" fill="none" stroke="#7e9bb0" stroke-width="8" stroke-linecap="round" />
+      
+      <!-- Ear Contour -->
+      <path d="M 485,230 C 465,230 460,265 480,275 C 495,282 505,260 495,245" fill="none" stroke="#1c2b36" stroke-width="8" stroke-linecap="round" />
+      <path d="M 485,230 C 465,230 460,265 480,275 C 495,282 505,260 495,245" fill="none" stroke="#7e9bb0" stroke-width="4" stroke-linecap="round" />
+
+      <!-- Chest / Shoulder Muscle Highlight Contours -->
+      <path d="M 370,445 C 330,480 300,540 285,610" fill="none" stroke="#7e9bb0" stroke-width="9" stroke-linecap="round" />
+      <path d="M 654,445 C 694,480 724,540 739,610" fill="none" stroke="#7e9bb0" stroke-width="9" stroke-linecap="round" />
+
+      <!-- Pectoral outlines -->
+      <path d="M 495,440 C 420,445 355,490 350,575 C 410,590 480,560 495,520" fill="none" stroke="#20313e" stroke-width="8" stroke-linecap="round" />
+      <path d="M 529,440 C 604,445 669,490 674,575 C 614,590 544,560 529,520" fill="none" stroke="#20313e" stroke-width="8" stroke-linecap="round" />
+
+      <!-- Pectoral highlight glow -->
+      <path d="M 490,446 C 425,450 365,492 360,568" fill="none" stroke="#7e9bb0" stroke-width="5" stroke-linecap="round" opacity="0.7" />
+      <path d="M 534,446 C 599,450 659,492 664,568" fill="none" stroke="#7e9bb0" stroke-width="5" stroke-linecap="round" opacity="0.7" />
+
+      <!-- Esophagus / Midline -->
+      <path d="M 512,440 L 512,530" stroke="#f07267" stroke-width="14" stroke-linecap="round" />
+      <path d="M 512,440 L 512,530" stroke="#1f2f3c" stroke-width="18" stroke-linecap="round" opacity="0.3" />
+
+      <!-- INTESTINES (Back layer of abdomen) -->
+      <!-- Intestinal loops -->
+      <g id="intestines">
+        <!-- Background backing shadow -->
+        <rect x="370" y="640" width="284" height="190" rx="30" fill="#1b2833" opacity="0.8" />
+
+        <!-- Large Intestine / Colon Outer Arch (Thick segmented tubes) -->
+        <!-- Left ascending colon -->
+        <path d="M 400,800 C 375,760 375,700 395,660" fill="none" stroke="#e0554d" stroke-width="36" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M 400,800 C 375,760 375,700 395,660" fill="none" stroke="#ff9b94" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" />
+
+        <!-- Transverse colon -->
+        <path d="M 395,660 C 440,645 580,645 625,660" fill="none" stroke="#e0554d" stroke-width="36" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M 395,660 C 440,645 580,645 625,660" fill="none" stroke="#ff9b94" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" />
+
+        <!-- Right descending colon -->
+        <path d="M 625,660 C 645,700 645,760 620,800" fill="none" stroke="#e0554d" stroke-width="36" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="M 625,660 C 645,700 645,760 620,800" fill="none" stroke="#ff9b94" stroke-width="18" stroke-linecap="round" stroke-linejoin="round" />
+
+        <!-- Sigmoid / Bottom loop -->
+        <path d="M 620,800 C 600,825 540,830 520,810 C 505,795 515,830 535,845" fill="none" stroke="#e0554d" stroke-width="32" stroke-linecap="round" />
+        <path d="M 620,800 C 600,825 540,830 520,810 C 505,795 515,830 535,845" fill="none" stroke="#ff9b94" stroke-width="14" stroke-linecap="round" />
+
+        <!-- Small Intestine Inner Coils (Ribbon Fold Pattern) -->
+        <path d="
+          M 430,685 Q 470,670 510,685 Q 550,700 590,685
+          Q 600,710 575,725 Q 512,710 445,725
+          Q 425,745 460,760 Q 520,740 580,760
+          Q 585,785 550,795 Q 512,780 440,795
+        " fill="none" stroke="#d6473e" stroke-width="26" stroke-linecap="round" stroke-linejoin="round" />
+
+        <path d="
+          M 430,685 Q 470,670 510,685 Q 550,700 590,685
+          Q 600,710 575,725 Q 512,710 445,725
+          Q 425,745 460,760 Q 520,740 580,760
+          Q 585,785 550,795 Q 512,780 440,795
+        " fill="none" stroke="#ffa39c" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" />
+
+        <!-- Intestine Black Outlines for Comic/Medical Pop Style -->
+        <path d="M 382,650 C 360,700 360,770 390,815" fill="none" stroke="#1c2832" stroke-width="7" stroke-linecap="round" />
+        <path d="M 638,650 C 660,700 660,770 630,815" fill="none" stroke="#1c2832" stroke-width="7" stroke-linecap="round" />
+      </g>
+
+      <!-- STOMACH (Behind Liver / Connecting Esophagus to Duodenum) -->
+      <g id="stomach">
+        <!-- Stomach Body -->
+        <path d="
+          M 500,535
+          C 460,540 440,580 460,630
+          C 480,665 550,660 580,635
+          C 600,615 595,570 550,560
+          C 530,555 520,535 500,535 Z
+        " fill="url(#stomachGrad)" stroke="#1a2732" stroke-width="8" stroke-linejoin="round" />
+
+        <!-- Stomach Highlight -->
+        <path d="M 470,555 C 455,580 465,615 480,630" fill="none" stroke="#ffb5af" stroke-width="8" stroke-linecap="round" />
+      </g>
+
+      <!-- LIVER (Prominent Vibrant Yellow/Gold Fatty Liver with textured lobes) -->
+      <g id="liver">
+        <!-- Main Liver Lobe Shadow / Outline -->
+        <path d="
+          M 380,555
+          C 370,590 380,640 425,655
+          C 475,670 570,645 615,545
+          C 625,525 610,515 580,520
+          C 540,528 505,510 440,515
+          C 400,518 385,535 380,555 Z
+        " fill="url(#liverGrad)" stroke="#1a2732" stroke-width="11" stroke-linejoin="round" />
+
+        <!-- Liver Upper Light Reflection -->
+        <path d="M 410,530 C 445,525 480,530 500,545 C 475,565 430,565 400,550 Z" fill="#ffffff" opacity="0.65" />
+
+        <!-- Fatty Spots / Texture on Liver -->
+        <circle cx="430" cy="580" r="10" fill="#fce46d" opacity="0.9" />
+        <circle cx="430" cy="580" r="6" fill="#e08600" opacity="0.4" />
+
+        <circle cx="465" cy="565" r="14" fill="#fce46d" opacity="0.9" />
+        <circle cx="465" cy="565" r="8" fill="#e08600" opacity="0.4" />
+
+        <circle cx="475" cy="610" r="11" fill="#fce46d" opacity="0.9" />
+        <circle cx="475" cy="610" r="6" fill="#e08600" opacity="0.4" />
+
+        <circle cx="525" cy="575" r="13" fill="#fce46d" opacity="0.9" />
+        <circle cx="525" cy="575" r="7" fill="#e08600" opacity="0.4" />
+
+        <circle cx="560" cy="555" r="9" fill="#fce46d" opacity="0.9" />
+
+        <circle cx="410" cy="615" r="8" fill="#fce46d" opacity="0.8" />
+        <circle cx="510" cy="625" r="10" fill="#fce46d" opacity="0.8" />
+
+        <!-- Gallbladder Accent underneath liver -->
+        <ellipse cx="450" cy="640" rx="14" ry="9" fill="#2d8042" stroke="#16381e" stroke-width="5" transform="rotate(-15 450 640)" />
+      </g>
+
+      <!-- MAGNIFYING GLASS (Inspecting Liver) -->
+      <g id="magnifyingGlass">
+        <!-- Handle -->
+        <path d="M 610,630 L 685,695" stroke="#1a2732" stroke-width="26" stroke-linecap="round" />
+        <path d="M 610,630 L 685,695" stroke="url(#glassRim)" stroke-width="16" stroke-linecap="round" />
+        <path d="M 615,635 L 680,690" stroke="#a9c4d6" stroke-width="5" stroke-linecap="round" />
+
+        <!-- Metallic Rim & Shadow -->
+        <circle cx="575" cy="595" r="60" fill="none" stroke="#1a2732" stroke-width="22" />
+        <circle cx="575" cy="595" r="60" fill="none" stroke="url(#glassRim)" stroke-width="14" />
+        
+        <!-- Glass Lens -->
+        <circle cx="575" cy="595" r="50" fill="url(#lensGrad)" stroke="#7fa2b8" stroke-width="4" />
+
+        <!-- Lens Glare / Light Reflection Arc -->
+        <path d="M 545,565 A 40 40 0 0 1 605,565" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" opacity="0.85" />
+        <circle cx="612" cy="580" r="4" fill="#ffffff" opacity="0.9" />
+      </g>
+    </g>
+
+    <!-- Outer Gloss Reflection on Metallic Rim -->
+    <path d="M 230,230 A 420 420 0 0 1 794,230" fill="none" stroke="#ffffff" stroke-width="10" stroke-linecap="round" opacity="0.45" />
+  </g>
 </svg>
