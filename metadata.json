@@ -1,0 +1,8 @@
+{
+  "name": "FattyLog",
+  "description": "All-in-One Kalorien- und Gewohnheitstracker mit 7-Tage-Statistik",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
